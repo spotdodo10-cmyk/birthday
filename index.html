@@ -326,8 +326,8 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
   letter-spacing:2.5px;margin-top:.3rem;}
 
 /* ===== SCRATCH CARD ===== */
-.scratch-wrap{position:relative;display:block;margin:1.25rem 0;}
-#scratchCanvas{position:absolute;inset:0;cursor:crosshair;border-radius:.75rem;
+.scratch-wrap{position:relative;display:inline-block;margin:1.25rem 0;}
+#scratchCanvas{position:absolute;top:0;left:0;cursor:crosshair;border-radius:.75rem;
   touch-action:none;}
 .scratch-hint{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:.5rem;
   letter-spacing:.5px;}
@@ -352,7 +352,7 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
   <div id="lockMain">
     <div class="lock-icon">🔒</div>
     <h1 id="lockTitle">This Gift is Locked</h1>
-    <p class="lock-msg" id="lockMsg">This website was made for one very special day only.<br>It will open on <strong>12 May 2026</strong> — Miranda's birthday. 🌹</p>
+    <p class="lock-msg" id="lockMsg">This website was made for your very special day only.<br>It will open on <strong>12 May 2026</strong> — Miranda's birthday. 🌹</p>
     <div class="countdown-box">
       <div class="cnt-label" id="cntLabel">Opens in</div>
       <div class="cnt-nums">
@@ -362,7 +362,7 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
         <div class="cnt-unit"><span class="cnt-val" id="cntS">--</span><span class="cnt-lab" id="cntSLabel">Secs</span></div>
       </div>
     </div>
-    <p class="lock-footer" id="lockFooter">Come back on her birthday 💕</p>
+    <p class="lock-footer" id="lockFooter">Come back on your birthday 💕</p>
     <div id="devBtn" style="display:none;margin-top:1.2rem;">
       <button onclick="unlockApp()" style="background:rgba(255,255,255,.15);color:#fff;border:2px dashed rgba(255,255,255,.4);border-radius:.75rem;padding:.5rem 1.25rem;font-size:.78rem;cursor:pointer;font-family:'Lato',sans-serif;letter-spacing:1px;">🔧 Force Open (Dev)</button>
     </div>
@@ -373,7 +373,7 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
     <div class="cheat-box" id="cheatBox">
       Your clock says it's May 12th, but the internet disagrees.<br><br>
       <strong>No shortcuts allowed</strong> — this gift is for the real day.<br>
-      Come back when it's truly her birthday. 🌹
+      Come back when it's truly your birthday. 🌹
     </div>
   </div>
 </div>
@@ -439,8 +439,8 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
       <div class="tl-dot">💑</div>
       <div class="tl-body">
         <div class="tl-date">21 December 2025</div>
-        <h3 id="tl3Title">She Said Yes (Mid-Salmon)</h3>
-        <p id="tl3Body">Most proposals come with candles and roses. This one happened at Sushi Hiro, while Miranda was deep in a salmon head — with her bare hands. She looked up, heard the question, and said yes. Fernando knew right then. She was the one.</p>
+        <h3 id="tl3Title">You Said Yes</h3>
+        <p id="tl3Body">Most proposals come with candles and roses. This one happened at Sushi Hiro, while you were deep in a salmon head — with your bare hands. You looked up, heard the question, and said yes. I knew right then. You were the one.</p>
       </div>
     </div>
     <div class="tl-line"></div>
@@ -448,8 +448,8 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
       <div class="tl-dot">✈️</div>
       <div class="tl-body">
         <div class="tl-date">14 February 2026</div>
-        <h3 id="tl4Title">Their First Valentine's Together</h3>
-        <p id="tl4Body">The first of many. A day spent simply being together, and realizing that ordinary moments feel extraordinary with the right person.</p>
+        <h3 id="tl4Title">Our First Valentine's Together</h3>
+        <p id="tl4Body">The first of many. A day spent simply being together, and realizing that ordinary moments feel extraordinary with you.</p>
       </div>
     </div>
     <div class="tl-line"></div>
@@ -546,7 +546,7 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
     <div class="coupon-title" id="couponTitle">❤️ Love Coupon ❤️</div>
     <div class="coupon-sub" id="couponSub">You have earned one wish — no questions asked,<br>no limits, no expiry date.</div>
     <div class="scratch-wrap">
-      <div class="coupon-code" id="couponCode">"Your Wish is My Command"</div>
+      <div class="coupon-code" id="couponCode" style="opacity:0;">"Your Wish is My Command"</div>
       <canvas id="scratchCanvas"></canvas>
     </div>
     <p class="scratch-hint">✦ scratch to reveal ✦</p>
@@ -610,9 +610,9 @@ const LANG = {
     lockMsg: 'This website was made for one very special day only.<br>It will open on <strong>12 May 2026</strong> — Miranda\'s birthday. 🌹',
     opensIn: 'Opens in',
     days: 'Days', hours: 'Hours', mins: 'Mins', secs: 'Secs',
-    lockFooter: 'Come back on her birthday 💕',
+    lockFooter: 'Come back on your birthday 💕',
     cheatTitle: 'Nice Try!',
-    cheatMsg: 'Your clock says it\'s May 12th, but the internet disagrees.<br><br><strong>No shortcuts allowed</strong> — this gift is for the real day.<br>Come back when it\'s truly her birthday. 🌹',
+    cheatMsg: 'Your clock says it\'s May 12th, but the internet disagrees.<br><br><strong>No shortcuts allowed</strong> — this gift is for the real day.<br>Come back when it\'s truly your birthday. 🌹',
     s0Title: 'Happy Birthday,<br>Miranda! 🌹',
     s0Sub: 'A gift crafted with all my love',
     s0Body: 'Welcome to your birthday adventure. 💕<br><br>Inside this gift are <strong>four games</strong>, each guarding a special surprise.<br>Win each game to unlock what\'s hidden behind it. 🌹<br><br>Take your time. This was made with love, just for you.',
@@ -627,10 +627,10 @@ const LANG = {
     tl1Body: 'A match on Coffee Meet Bagel — a small notification that quietly changed everything. Two strangers, one app, and a universe full of possibility.',
     tl2Title: 'First Date at AEON Sentul',
     tl2Body: 'Nervous smiles, warm conversations, and the feeling that time moved differently. Jakarta had never felt so full of magic.',
-    tl3Title: 'She Said Yes (Mid-Salmon)',
-    tl3Body: 'Most proposals come with candles and roses. This one happened at Sushi Hiro, while Miranda was deep in a salmon head — with her bare hands. She looked up, heard the question, and said yes. Fernando knew right then. She was the one.',
-    tl4Title: 'Their First Valentine\'s Together',
-    tl4Body: 'The first of many. A day spent simply being together, and realizing that ordinary moments feel extraordinary with the right person.',
+    tl3Title: 'You Said Yes',
+    tl3Body: 'Most proposals come with candles and roses. This one happened at Sushi Hiro, while you were deep in a salmon head — with your bare hands. You looked up, heard the question, and said yes. I knew right then. You were the one.',
+    tl4Title: 'Our First Valentine\'s Together',
+    tl4Body: 'The first of many. A day spent simply being together, and realizing that ordinary moments feel extraordinary with you.',
     tl5Date: 'Today & Always',
     tl5Title: 'To Be Continued...',
     tl5Body: 'Some stories don\'t have an ending — they just keep going, page after page, day after day. This is one of those stories. And it\'s only just begun.',
@@ -705,9 +705,9 @@ Fernando \u{1F495}`
     lockMsg: 'Website ini dibuat untuk satu hari yang sangat istimewa.<br>Akan terbuka pada <strong>12 Mei 2026</strong> — hari ulang tahun Miranda. 🌹',
     opensIn: 'Terbuka dalam',
     days: 'Hari', hours: 'Jam', mins: 'Menit', secs: 'Detik',
-    lockFooter: 'Kembali di hari ulang tahunnya 💕',
+    lockFooter: 'Kembali di hari ulang tahunmu 💕',
     cheatTitle: 'Tidak Bisa!',
-    cheatMsg: 'Jammu menunjukkan 12 Mei, tapi server tidak setuju.<br><br><strong>Tidak ada jalan pintas</strong> — hadiah ini untuk hari yang sesungguhnya.<br>Kembalilah saat benar-benar hari ulang tahunnya. 🌹',
+    cheatMsg: 'Jammu menunjukkan 12 Mei, tapi server tidak setuju.<br><br><strong>Tidak ada jalan pintas</strong> — hadiah ini untuk hari yang sesungguhnya.<br>Kembalilah saat benar-benar hari ulang tahunmu. 🌹',
     s0Title: 'Selamat Ulang Tahun,<br>Miranda! 🌹',
     s0Sub: 'Hadiah yang dibuat dengan sepenuh cinta',
     s0Body: 'Selamat datang di petualangan ulang tahunmu. 💕<br><br>Di dalam hadiah ini ada <strong>empat permainan</strong>, masing-masing menyimpan kejutan spesial.<br>Menangkan setiap permainan untuk membuka apa yang tersembunyi di baliknya. 🌹<br><br>Ambil waktumu. Ini dibuat dengan cinta, khusus untukmu.',
@@ -722,10 +722,10 @@ Fernando \u{1F495}`
     tl1Body: 'Sebuah kecocokan di Coffee Meet Bagel — notifikasi kecil yang diam-diam mengubah segalanya. Dua orang asing, satu aplikasi, dan semesta penuh kemungkinan.',
     tl2Title: 'Kencan Pertama di AEON Sentul',
     tl2Body: 'Senyum gugup, percakapan hangat, dan perasaan bahwa waktu bergerak berbeda. Jakarta terasa begitu penuh keajaiban.',
-    tl3Title: 'Ia Bilang Ya (Di Sela Makan Salmon)',
-    tl3Body: 'Kebanyakan lamaran datang dengan lilin dan bunga. Yang satu ini terjadi di Sushi Hiro, saat Miranda tengah asyik melahap kepala salmon — dengan tangannya sendiri. Ia mendongak, mendengar pertanyaan itu, dan bilang ya. Fernando tahu saat itu juga. Ia adalah orangnya.',
-    tl4Title: 'Valentine Pertama Mereka Bersama',
-    tl4Body: 'Yang pertama dari banyak lagi. Sehari yang dihabiskan hanya untuk bersama, dan menyadari bahwa momen-momen biasa terasa luar biasa bersama orang yang tepat.',
+    tl3Title: 'Kamu Bilang Ya',
+    tl3Body: 'Kebanyakan lamaran datang dengan lilin dan bunga. Yang satu ini terjadi di Sushi Hiro, saat kamu tengah asik melahap kepala salmon — dengan tanganmu sendiri. Kamu mendongak, mendengar pertanyaan itu, dan bilang ya. Aku tahu saat itu juga. Kamulah orangnya.',
+    tl4Title: 'Valentine Pertama Kita Bersama',
+    tl4Body: 'Yang pertama dari banyak lagi. Sehari yang dihabiskan hanya untuk bersama, dan menyadari bahwa momen-momen biasa terasa luar biasa bersamamu.',
     tl5Date: 'Hari Ini & Selamanya',
     tl5Title: 'Bersambung...',
     tl5Body: 'Ada cerita yang tidak punya akhir — hanya terus berlanjut, halaman demi halaman, hari demi hari. Inilah salah satunya. Dan ini baru saja dimulai.',
@@ -920,7 +920,7 @@ function go(i) {
     if (cur === 5) setupScramble();
     if (cur === 6) buildAlbum();
     if (cur === 7) setupMerge();
-    if (cur === 8) setTimeout(initScratch, 350);
+    if (cur === 8) setTimeout(initScratch, 60);
     if (cur === 9) startDaysCounter();
 
     setTimeout(() => { entering.classList.remove('s-in'); transitioning = false; }, 400);
@@ -1608,12 +1608,14 @@ let SC = { painting: false, revealed: false };
 function initScratch() {
   const code = document.getElementById('couponCode');
   const canvas = document.getElementById('scratchCanvas');
-  if (!canvas || !code || SC.revealed) return;
+  if (!canvas || !code) return;
+  if (SC.revealed) { code.style.opacity = '1'; return; }
   SC.painting = false;
 
   const w = code.offsetWidth;
   const h = code.offsetHeight;
   canvas.width = w; canvas.height = h;
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
 
   const ctx = canvas.getContext('2d');
   const grad = ctx.createLinearGradient(0, 0, w, h);
@@ -1621,12 +1623,16 @@ function initScratch() {
   grad.addColorStop(0.45, '#F0D060');
   grad.addColorStop(1, '#A07810');
   ctx.fillStyle = grad;
-  ctx.roundRect(0, 0, w, h, 10);
+  if (ctx.roundRect) ctx.roundRect(0, 0, w, h, 10);
+  else ctx.rect(0, 0, w, h);
   ctx.fill();
   ctx.fillStyle = 'rgba(0,0,0,.18)';
   ctx.font = 'bold 10px Lato, sans-serif';
   ctx.textAlign = 'center';
   for (let y = 14; y < h; y += 17) ctx.fillText('✦  SCRATCH HERE  ✦', w / 2, y);
+
+  // Canvas is now covering the text — safe to reveal the element underneath
+  code.style.opacity = '1';
 
   function scratch(x, y) {
     const r = canvas.getBoundingClientRect();
