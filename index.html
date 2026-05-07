@@ -46,6 +46,23 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 .dot{width:7px;height:7px;border-radius:50%;background:rgba(196,30,58,.28);transition:.3s;}
 .dot.on{background:var(--red);transform:scale(1.5);}
 
+/* ===== LANG BTN ===== */
+#langBtn{
+  position:fixed;top:.7rem;left:.7rem;z-index:10000;
+  background:rgba(196,30,58,.9);color:#fff;border:none;border-radius:1rem;
+  padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;
+  letter-spacing:1.5px;box-shadow:0 2px 10px rgba(0,0,0,.25);transition:.2s;
+  font-family:'Lato',sans-serif;
+}
+#langBtn:hover{background:var(--dark);transform:scale(1.06);}
+#devSkip{
+  position:fixed;bottom:3.5rem;left:.7rem;z-index:10000;display:none;
+  background:rgba(0,0,0,.55);color:#fff;border:2px dashed rgba(255,255,255,.35);
+  border-radius:.75rem;padding:.38rem .85rem;font-size:.72rem;cursor:pointer;
+  font-family:'Lato',sans-serif;letter-spacing:1px;transition:.2s;
+}
+#devSkip:hover{background:rgba(0,0,0,.8);}
+
 /* ===== MUSIC BTN ===== */
 #musicBtn{
   position:fixed;top:.7rem;right:.7rem;z-index:10000;display:flex;
@@ -58,6 +75,10 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 /* ===== SCREENS ===== */
 .screen{display:none;min-height:100vh;padding:5rem 1.5rem 4rem;max-width:680px;margin:0 auto;}
 .screen.on{display:block;}
+.screen.s-in{animation:sIn .4s ease both;}
+.screen.s-out{animation:sOut .28s ease both;}
+@keyframes sIn{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes sOut{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(-18px);}}
 
 /* ===== HERO ===== */
 .hero{text-align:center;padding:2rem 0;}
@@ -96,15 +117,44 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 
 /* ===== ALBUM ===== */
-.album-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.85rem;margin:1rem 0;}
-@media(min-width:480px){.album-grid{grid-template-columns:repeat(3,1fr);}}
-.album-slot{aspect-ratio:1;border-radius:.75rem;overflow:hidden;background:var(--rose);
-  display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;
-  border:2px solid var(--red);transition:.2s;}
-.album-slot:hover{transform:scale(1.03);box-shadow:0 4px 12px rgba(196,30,58,.3);}
-.album-slot img{width:100%;height:100%;object-fit:cover;}
-.album-ph{text-align:center;padding:.5rem;font-size:.72rem;color:var(--dark);line-height:1.4;}
-.album-ph-icon{font-size:2.2rem;display:block;margin-bottom:.3rem;}
+.album-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1.1rem;margin:.5rem 0 1.5rem;padding:.25rem;
+}
+@media(min-width:480px){.album-grid{grid-template-columns:repeat(3,1fr);gap:1.3rem;}}
+.album-slot{
+  background:#fff;padding:.5rem .5rem 2rem;
+  box-shadow:3px 4px 14px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.08);
+  cursor:pointer;position:relative;
+  transform:rotate(var(--rot,0deg));
+  transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s ease;
+  animation:cardIn .5s ease both;
+}
+.album-slot:hover{
+  transform:rotate(0deg) scale(1.07) translateY(-5px) !important;
+  box-shadow:6px 12px 30px rgba(0,0,0,.22);
+  z-index:5;
+}
+.slot-inner{aspect-ratio:1;overflow:hidden;background:var(--rose);position:relative;}
+.slot-inner img{width:100%;height:100%;object-fit:cover;display:block;}
+.slot-ph{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.3rem;
+}
+.slot-ph-icon{font-size:2rem;}
+.slot-ph-name{font-size:.6rem;opacity:.55;letter-spacing:.5px;color:var(--dark);}
+.vid-slot .slot-inner{background:linear-gradient(135deg,var(--dark),var(--red));}
+.vid-slot .slot-ph{color:#fff;}
+.play-badge{
+  position:absolute;top:.45rem;right:.45rem;
+  background:rgba(196,30,58,.88);color:#fff;border-radius:50%;
+  width:24px;height:24px;display:flex;align-items:center;
+  justify-content:center;font-size:.65rem;pointer-events:none;
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(40px) rotate(var(--rot,0deg));}
+  to{opacity:1;transform:translateY(0) rotate(var(--rot,0deg));}
+}
 
 /* ===== COUPON ===== */
 .coupon{
@@ -190,8 +240,97 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 @keyframes pfall{0%{transform:translateY(-20px) rotate(0);opacity:.9;}100%{transform:translateY(110vh) rotate(400deg);opacity:0;}}
 
 /* ===== LIGHTBOX ===== */
-#photoBox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.87);z-index:400;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;}
-#photoBoxImg{max-width:92vw;max-height:80vh;border-radius:.6rem;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+#photoBox{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.93);z-index:400;
+  flex-direction:column;align-items:center;justify-content:center;
+}
+#photoBox.show{display:flex;}
+#photoBoxImg{
+  max-width:90vw;max-height:76vh;border-radius:.5rem;
+  box-shadow:0 8px 40px rgba(0,0,0,.6);display:block;
+  animation:lbIn .22s ease;
+}
+#photoBoxVid{
+  max-width:90vw;max-height:76vh;border-radius:.5rem;
+  display:none;box-shadow:0 8px 40px rgba(0,0,0,.6);
+}
+@keyframes lbIn{from{opacity:0;transform:scale(.93);}to{opacity:1;transform:scale(1);}}
+.lb-arrow{
+  position:fixed;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.13);border:none;color:#fff;
+  font-size:2rem;width:46px;height:46px;border-radius:50%;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:.2s;z-index:401;backdrop-filter:blur(4px);line-height:1;
+}
+.lb-arrow:hover{background:rgba(255,255,255,.28);}
+#lbPrev{left:.6rem;}
+#lbNext{right:.6rem;}
+#lbClose{
+  position:fixed;top:.7rem;left:50%;transform:translateX(-50%);
+  background:rgba(255,255,255,.18);border:none;color:#fff;
+  font-size:.85rem;padding:.3rem .9rem;border-radius:2rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:.2s;z-index:10002;letter-spacing:.5px;gap:.3rem;
+  font-family:'Lato',sans-serif;
+}
+#lbClose:hover{background:rgba(255,255,255,.32);}
+#lbClose::before{content:'✕';margin-right:.2rem;}
+#lbCounter{color:rgba(255,255,255,.45);font-size:.78rem;margin-top:.85rem;letter-spacing:1.5px;}
+
+/* ===== LOCK REVEAL BURST ===== */
+#lockScreen.revealing{animation:lsReveal .9s ease forwards;}
+@keyframes lsReveal{0%{opacity:1;transform:scale(1);}45%{opacity:1;transform:scale(1.05);}100%{opacity:0;transform:scale(1.14);}}
+.burst-heart{position:fixed;pointer-events:none;z-index:10001;font-size:1.6rem;
+  transform:translate(-50%,-50%);animation:burstOut 1s ease forwards;}
+@keyframes burstOut{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.4);}
+  55%{opacity:1;}
+  100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(.8);}
+}
+
+/* ===== CURSOR TRAIL ===== */
+.trail-heart{position:fixed;pointer-events:none;z-index:9998;font-size:.9rem;
+  transform:translate(-50%,-50%);animation:trailUp .75s ease forwards;}
+@keyframes trailUp{
+  0%{opacity:.85;transform:translate(-50%,-50%) scale(1);}
+  100%{opacity:0;transform:translate(-50%,-220%) scale(.25);}
+}
+
+/* ===== PARCHMENT LETTER ===== */
+.letter-wrap{
+  background:linear-gradient(160deg,#fef7e4 0%,#f9e8c5 55%,#fdf3d6 100%);
+  border:none;border-radius:.75rem;padding:2.8rem 1.75rem 2.2rem;position:relative;
+  box-shadow:0 2px 8px rgba(120,80,30,.14),0 10px 32px rgba(120,80,30,.1),
+    inset 0 0 90px rgba(180,130,60,.04);
+}
+.letter-wrap::before{display:none;}
+.letter-seal{
+  position:absolute;top:-1.5rem;left:50%;transform:translateX(-50%);
+  width:54px;height:54px;background:radial-gradient(circle at 38% 35%,#e05050,var(--dark));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;box-shadow:0 3px 14px rgba(139,0,0,.45);z-index:1;
+}
+.letter-body{font-family:'Playfair Display',serif;font-style:italic;line-height:2.1;
+  color:#3d1f0a;font-size:.98rem;white-space:pre-wrap;min-height:200px;}
+
+/* ===== DAYS COUNTER ===== */
+.days-counter{
+  background:linear-gradient(135deg,rgba(196,30,58,.07),rgba(212,175,55,.1));
+  border:1px solid rgba(196,30,58,.18);border-radius:1rem;
+  padding:1.25rem 1rem;margin:1.2rem 0;
+}
+.days-num{font-family:'Playfair Display',serif;font-size:3.8rem;color:var(--red);
+  font-weight:700;line-height:1;}
+.days-label{font-size:.72rem;color:var(--gold);text-transform:uppercase;
+  letter-spacing:2.5px;margin-top:.3rem;}
+
+/* ===== SCRATCH CARD ===== */
+.scratch-wrap{position:relative;display:block;margin:1.25rem 0;}
+#scratchCanvas{position:absolute;inset:0;cursor:crosshair;border-radius:.75rem;
+  touch-action:none;}
+.scratch-hint{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:.5rem;
+  letter-spacing:.5px;}
 
 /* ===== FINAL ===== */
 .final-wrap{text-align:center;padding:2.5rem 0;}
@@ -200,6 +339,11 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 </style>
 </head>
 <body>
+<!-- ===== LANG BUTTON ===== -->
+<button id="langBtn" onclick="toggleLang()">EN</button>
+<!-- DEV SKIP (only shown when DEV_MODE = true) -->
+<button id="devSkip" onclick="devSkip()">⏭ Skip</button>
+
 <!-- ===== MUSIC BUTTON ===== -->
 <button id="musicBtn" onclick="MP.toggle()" title="Toggle Music">🎵</button>
 
@@ -207,23 +351,26 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 <div id="lockScreen">
   <div id="lockMain">
     <div class="lock-icon">🔒</div>
-    <h1>This Gift is Locked</h1>
-    <p class="lock-msg">This website was made for one very special day only.<br>It will open on <strong>12 May 2026</strong> — Miranda's birthday. 🌹</p>
+    <h1 id="lockTitle">This Gift is Locked</h1>
+    <p class="lock-msg" id="lockMsg">This website was made for one very special day only.<br>It will open on <strong>12 May 2026</strong> — Miranda's birthday. 🌹</p>
     <div class="countdown-box">
-      <div class="cnt-label">Opens in</div>
+      <div class="cnt-label" id="cntLabel">Opens in</div>
       <div class="cnt-nums">
-        <div class="cnt-unit"><span class="cnt-val" id="cntD">--</span><span class="cnt-lab">Days</span></div>
-        <div class="cnt-unit"><span class="cnt-val" id="cntH">--</span><span class="cnt-lab">Hours</span></div>
-        <div class="cnt-unit"><span class="cnt-val" id="cntM">--</span><span class="cnt-lab">Mins</span></div>
-        <div class="cnt-unit"><span class="cnt-val" id="cntS">--</span><span class="cnt-lab">Secs</span></div>
+        <div class="cnt-unit"><span class="cnt-val" id="cntD">--</span><span class="cnt-lab" id="cntDLabel">Days</span></div>
+        <div class="cnt-unit"><span class="cnt-val" id="cntH">--</span><span class="cnt-lab" id="cntHLabel">Hours</span></div>
+        <div class="cnt-unit"><span class="cnt-val" id="cntM">--</span><span class="cnt-lab" id="cntMLabel">Mins</span></div>
+        <div class="cnt-unit"><span class="cnt-val" id="cntS">--</span><span class="cnt-lab" id="cntSLabel">Secs</span></div>
       </div>
     </div>
-    <p class="lock-footer">Come back on her birthday 💕</p>
+    <p class="lock-footer" id="lockFooter">Come back on her birthday 💕</p>
+    <div id="devBtn" style="display:none;margin-top:1.2rem;">
+      <button onclick="unlockApp()" style="background:rgba(255,255,255,.15);color:#fff;border:2px dashed rgba(255,255,255,.4);border-radius:.75rem;padding:.5rem 1.25rem;font-size:.78rem;cursor:pointer;font-family:'Lato',sans-serif;letter-spacing:1px;">🔧 Force Open (Dev)</button>
+    </div>
   </div>
   <div id="lockCheat">
     <div class="lock-icon">😏</div>
-    <h1 style="color:#fff;font-family:'Playfair Display',serif;">Nice Try!</h1>
-    <div class="cheat-box">
+    <h1 id="cheatTitle" style="color:#fff;font-family:'Playfair Display',serif;">Nice Try!</h1>
+    <div class="cheat-box" id="cheatBox">
       Your clock says it's May 12th, but the internet disagrees.<br><br>
       <strong>No shortcuts allowed</strong> — this gift is for the real day.<br>
       Come back when it's truly her birthday. 🌹
@@ -240,26 +387,26 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 <div class="screen" id="s0">
   <div class="hero">
     <div class="petal-row">🌸 🌹 🌺</div>
-    <h1>Happy Birthday,<br>Miranda! 🌹</h1>
-    <p class="sub">A gift crafted with all my love</p>
+    <h1 id="s0Title">Happy Birthday,<br>Miranda! 🌹</h1>
+    <p class="sub" id="s0Sub">A gift crafted with all my love</p>
     <div class="card" style="text-align:left;">
-      <p style="line-height:1.8;color:#555;">
+      <p id="s0Body" style="line-height:1.8;color:#555;">
         Welcome to your birthday adventure. 💕<br><br>
         Inside this gift are <strong>four games</strong>, each guarding a special surprise.<br>
         Win each game to unlock what's hidden behind it. 🌹<br><br>
         Take your time. This was made with love, just for you.
       </p>
     </div>
-    <button class="btn" onclick="go(1)" style="font-size:1.1rem;padding:.85rem 2.5rem;">Begin Your Journey 🌸</button>
+    <button class="btn" id="s0Btn" onclick="go(1)" style="font-size:1.1rem;padding:.85rem 2.5rem;">Begin Your Journey 🌸</button>
   </div>
 </div>
 
 <!-- ===== S1: GAME 1 — CATCH HEARTS ===== -->
 <div class="screen" id="s1">
   <div class="game-area">
-    <div class="game-title">💕 Catch the Hearts</div>
-    <div class="game-hint">Catch <strong>15 hearts</strong> to unlock our love story timeline ✨</div>
-    <div class="score-display">Caught: <span id="chScore">0</span> / 15</div>
+    <div class="game-title" id="g1Title">💕 Catch the Hearts</div>
+    <div class="game-hint" id="g1Hint">Catch <strong>15 hearts</strong> to unlock our love story timeline ✨</div>
+    <div class="score-display"><span id="g1ScoreLabel">Caught</span>: <span id="chScore">0</span> / 15</div>
     <canvas id="catchCanvas" width="300" height="380"></canvas>
     <p id="chMsg" style="color:var(--red);font-weight:600;min-height:1.5rem;margin:.5rem 0;"></p>
     <button class="btn" id="chStartBtn" onclick="startCatch()">Start Game 💕</button>
@@ -268,14 +415,14 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 
 <!-- ===== S2: TIMELINE ===== -->
 <div class="screen" id="s2">
-  <h2 style="font-family:'Playfair Display',serif;color:var(--red);text-align:center;margin-bottom:1.5rem;font-size:1.9rem;">Our Story 💕</h2>
+  <h2 id="s2Title" style="font-family:'Playfair Display',serif;color:var(--red);text-align:center;margin-bottom:1.5rem;font-size:1.9rem;">Our Story 💕</h2>
   <div class="card">
     <div class="tl-item">
       <div class="tl-dot">☕</div>
       <div class="tl-body">
         <div class="tl-date">22 November 2025</div>
-        <h3>The First Hello</h3>
-        <p>A match on Coffee Meet Bagel — a small notification that quietly changed everything. Two strangers, one app, and a universe full of possibility.</p>
+        <h3 id="tl1Title">The First Hello</h3>
+        <p id="tl1Body">A match on Coffee Meet Bagel — a small notification that quietly changed everything. Two strangers, one app, and a universe full of possibility.</p>
       </div>
     </div>
     <div class="tl-line"></div>
@@ -283,8 +430,8 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
       <div class="tl-dot">🛍️</div>
       <div class="tl-body">
         <div class="tl-date">29 November 2025</div>
-        <h3>First Date at AEON Sentul</h3>
-        <p>Nervous smiles, warm conversations, and the feeling that time moved differently. Kuala Lumpur had never felt so full of magic.</p>
+        <h3 id="tl2Title">First Date at AEON Sentul</h3>
+        <p id="tl2Body">Nervous smiles, warm conversations, and the feeling that time moved differently. Jakarta had never felt so full of magic.</p>
       </div>
     </div>
     <div class="tl-line"></div>
@@ -292,8 +439,8 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
       <div class="tl-dot">💑</div>
       <div class="tl-body">
         <div class="tl-date">21 December 2025</div>
-        <h3>Officially Ours</h3>
-        <p>The day you said yes — not just to dating, but to me. All of me. A day that will always feel like sunrise.</p>
+        <h3 id="tl3Title">She Said Yes (Mid-Salmon)</h3>
+        <p id="tl3Body">Most proposals come with candles and roses. This one happened at Sushi Hiro, while Miranda was deep in a salmon head — with her bare hands. She looked up, heard the question, and said yes. Fernando knew right then. She was the one.</p>
       </div>
     </div>
     <div class="tl-line"></div>
@@ -301,22 +448,31 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
       <div class="tl-dot">✈️</div>
       <div class="tl-body">
         <div class="tl-date">14 February 2026</div>
-        <h3>First Valentine's, in Jakarta</h3>
-        <p>Fernando brought Miranda to Jakarta for their first Valentine's Day together — his city, his world. She saw where he grew up, tasted the food he loves, and fell a little more in love with the person behind the story. Their first adventure together, and the beginning of many more.</p>
+        <h3 id="tl4Title">Their First Valentine's Together</h3>
+        <p id="tl4Body">The first of many. A day spent simply being together, and realizing that ordinary moments feel extraordinary with the right person.</p>
+      </div>
+    </div>
+    <div class="tl-line"></div>
+    <div class="tl-item">
+      <div class="tl-dot">💕</div>
+      <div class="tl-body">
+        <div class="tl-date" id="tl5Date">Today & Always</div>
+        <h3 id="tl5Title">To Be Continued...</h3>
+        <p id="tl5Body">Some stories don't have an ending — they just keep going, page after page, day after day. This is one of those stories. And it's only just begun.</p>
       </div>
     </div>
   </div>
   <div style="text-align:center;margin-top:1.5rem;">
-    <button class="btn" onclick="go(3)">Next Challenge 🎮</button>
+    <button class="btn" id="s2NextBtn" onclick="go(3)">Next Challenge 🎮</button>
   </div>
 </div>
 
 <!-- ===== S3: GAME 2 — MEMORY FLIP ===== -->
 <div class="screen" id="s3">
   <div class="game-area">
-    <div class="game-title">🌸 Memory Flip</div>
-    <div class="game-hint">Match all <strong>8 pairs</strong> to unlock a love letter written just for you 💌</div>
-    <div class="score-display">Pairs found: <span id="mfPairs">0</span> / 8</div>
+    <div class="game-title" id="g2Title">🌸 Memory Flip</div>
+    <div class="game-hint" id="g2Hint">Match all <strong>8 pairs</strong> to unlock a love letter written just for you 💌</div>
+    <div class="score-display"><span id="g2ScoreLabel">Pairs found</span>: <span id="mfPairs">0</span> / 8</div>
     <div class="mem-grid g4x4" id="memGrid"></div>
     <p id="mfMsg" style="color:var(--red);font-weight:600;min-height:1.5rem;margin:.5rem 0;"></p>
     <button class="btn" id="mfStartBtn" onclick="startMemory()">Start Game 🌸</button>
@@ -325,11 +481,11 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 
 <!-- ===== S4: LOVE LETTER ===== -->
 <div class="screen" id="s4">
-  <h2 style="font-family:'Playfair Display',serif;color:var(--red);text-align:center;margin-bottom:1.5rem;font-size:1.9rem;">💌 A Letter For You</h2>
+  <h2 id="s4Title" style="font-family:'Playfair Display',serif;color:var(--red);text-align:center;margin-bottom:1.5rem;font-size:1.9rem;">💌 A Letter For You</h2>
   <div class="letter-wrap">
-    <p class="letter-body" id="letterBody" title="Click to skip"></p><span class="cursor" id="letterCursor"></span>
+    <div class="letter-seal">🌹</div>
+    <p class="letter-body" id="letterBody"></p><span class="cursor" id="letterCursor"></span>
   </div>
-  <p style="text-align:center;color:#bbb;font-size:.78rem;margin:.5rem 0;">(tap the letter to skip ahead)</p>
   <div style="text-align:center;margin-top:1rem;">
     <button class="btn" id="letterNextBtn" style="display:none;" onclick="go(5)">Next Challenge 🎮</button>
   </div>
@@ -338,8 +494,8 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 <!-- ===== S5: GAME 3 — WORD SCRAMBLE ===== -->
 <div class="screen" id="s5">
   <div class="game-area">
-    <div class="game-title">🔤 Word Scramble</div>
-    <div class="game-hint">Unscramble all <strong>5 words</strong> to unlock our photo album 📸</div>
+    <div class="game-title" id="g3Title">🔤 Word Scramble</div>
+    <div class="game-hint" id="g3Hint">Unscramble all <strong>5 words</strong> to unlock our photo album 📸</div>
     <div class="ws-progress" id="wsProgress">Word 1 of 5</div>
     <div class="scramble-word" id="scrambleWord"></div>
     <div class="scramble-hint" id="scrambleHint"></div>
@@ -347,58 +503,36 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
       autocomplete="off" autocorrect="off" spellcheck="false"
       onkeydown="if(event.key==='Enter')checkScramble()">
     <div class="scramble-feedback" id="scrambleFeedback"></div>
-    <button class="btn" onclick="checkScramble()">Check ✓</button>
-    <button class="btn btn-ghost" onclick="skipScramble()">Skip →</button>
+    <button class="btn" id="g3CheckBtn" onclick="checkScramble()">Check ✓</button>
   </div>
 </div>
 
 <!-- ===== S6: PHOTO ALBUM ===== -->
 <div class="screen" id="s6">
-  <h2 style="font-family:'Playfair Display',serif;color:var(--red);text-align:center;margin-bottom:.4rem;font-size:1.9rem;">📸 Our Memories</h2>
-  <p style="text-align:center;color:#888;font-size:.88rem;margin-bottom:1rem;">Moments that will live in my heart forever</p>
-  <div class="album-grid">
-    <div class="album-slot" onclick="openPhoto('photo1.jpg')">
-      <img src="photo1.jpg" alt="Memory 1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="album-ph" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;"><span class="album-ph-icon">🌹</span>photo1.jpg</div>
-    </div>
-    <div class="album-slot" onclick="openPhoto('photo2.jpg')">
-      <img src="photo2.jpg" alt="Memory 2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="album-ph" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;"><span class="album-ph-icon">💕</span>photo2.jpg</div>
-    </div>
-    <div class="album-slot" onclick="openPhoto('photo3.jpg')">
-      <img src="photo3.jpg" alt="Memory 3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="album-ph" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;"><span class="album-ph-icon">🌸</span>photo3.jpg</div>
-    </div>
-    <div class="album-slot" onclick="openPhoto('photo4.jpg')">
-      <img src="photo4.jpg" alt="Memory 4" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="album-ph" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;"><span class="album-ph-icon">💖</span>photo4.jpg</div>
-    </div>
-    <div class="album-slot" onclick="openPhoto('photo5.jpg')">
-      <img src="photo5.jpg" alt="Memory 5" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="album-ph" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;"><span class="album-ph-icon">🌺</span>photo5.jpg</div>
-    </div>
-    <div class="album-slot" onclick="openPhoto('photo6.jpg')">
-      <img src="photo6.jpg" alt="Memory 6" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div class="album-ph" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;"><span class="album-ph-icon">✨</span>photo6.jpg</div>
-    </div>
-  </div>
+  <h2 id="s6Title" style="font-family:'Playfair Display',serif;color:var(--red);text-align:center;margin-bottom:.4rem;font-size:1.9rem;">📸 Our Memories</h2>
+  <p id="s6Sub" style="text-align:center;color:#888;font-size:.88rem;margin-bottom:1rem;">Moments that will live in my heart forever</p>
+  <div class="album-grid" id="albumGrid"></div>
   <div style="text-align:center;margin-top:1.5rem;">
-    <button class="btn" onclick="go(7)">Final Challenge 🎮</button>
+    <button class="btn" id="s6FinalBtn" onclick="go(7)">Final Challenge 🎮</button>
   </div>
 </div>
 
-<!-- Photo Lightbox -->
-<div id="photoBox" onclick="closePhoto()">
+<!-- Photo / Video Lightbox -->
+<div id="photoBox">
+  <button id="lbClose" onclick="closeMedia()">Close</button>
+  <button class="lb-arrow" id="lbPrev" onclick="lbNav(-1)">&#8249;</button>
   <img id="photoBoxImg" alt="Memory">
-  <p style="color:rgba(255,255,255,.6);margin-top:.75rem;font-size:.8rem;">Tap to close</p>
+  <video id="photoBoxVid" controls playsinline></video>
+  <button class="lb-arrow" id="lbNext" onclick="lbNav(1)">&#8250;</button>
+  <div id="lbCounter"></div>
 </div>
 
 <!-- ===== S7: GAME 4 — MERGE & BLOOM ===== -->
 <div class="screen" id="s7">
   <div class="game-area">
-    <div class="game-title">🌱 Merge &amp; Bloom</div>
-    <div class="game-hint">Merge flowers to earn <strong>8 points</strong> and unlock your special wish 🎁<br><small style="color:#bbb;">Click a flower, then click a matching flower to merge them!</small></div>
-    <div class="merge-score">Score: <span id="mgScore">0</span> / 8 merges</div>
+    <div class="game-title" id="g4Title">🌱 Merge &amp; Bloom</div>
+    <div class="game-hint" id="g4Hint">Merge flowers to earn <strong>8 points</strong> and unlock your special wish 🎁<br><small id="g4HintSub" style="color:#bbb;">Click a flower, then click a matching flower to merge them!</small></div>
+    <div class="merge-score"><span id="g4ScoreLabel">Score</span>: <span id="mgScore">0</span> / 8 <span id="g4MergesLabel">merges</span></div>
     <div id="mergeGrid"></div>
     <p id="mgMsg" style="color:var(--red);font-weight:600;min-height:1.5rem;margin:.5rem 0;font-size:.9rem;"></p>
     <button class="btn" id="mgStartBtn" onclick="startMerge()">Start Game 🌱</button>
@@ -407,15 +541,19 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 
 <!-- ===== S8: COUPON ===== -->
 <div class="screen" id="s8">
-  <h2 style="font-family:'Playfair Display',serif;color:var(--red);text-align:center;margin-bottom:1.5rem;font-size:1.9rem;">🎁 Your Wish</h2>
+  <h2 id="s8Title" style="font-family:'Playfair Display',serif;color:var(--red);text-align:center;margin-bottom:1.5rem;font-size:1.9rem;">🎁 Your Wish</h2>
   <div class="coupon">
-    <div class="coupon-title">❤️ Love Coupon ❤️</div>
-    <div class="coupon-sub">You have earned one wish — no questions asked,<br>no limits, no expiry date.</div>
-    <div class="coupon-code">"Your Wish is My Command"</div>
-    <p style="margin-top:1.5rem;font-size:.88rem;opacity:.8;">Redeemable anytime. Valid forever. From Fernando, with all his love. 💕</p>
+    <div class="coupon-title" id="couponTitle">❤️ Love Coupon ❤️</div>
+    <div class="coupon-sub" id="couponSub">You have earned one wish — no questions asked,<br>no limits, no expiry date.</div>
+    <div class="scratch-wrap">
+      <div class="coupon-code" id="couponCode">"Your Wish is My Command"</div>
+      <canvas id="scratchCanvas"></canvas>
+    </div>
+    <p class="scratch-hint">✦ scratch to reveal ✦</p>
+    <p id="couponFooter" style="margin-top:1rem;font-size:.88rem;opacity:.8;">Redeemable anytime. Valid forever. From Fernando, with all his love. 💕</p>
   </div>
   <div style="text-align:center;margin-top:2rem;">
-    <button class="btn" style="font-size:1.1rem;padding:.85rem 2.5rem;" onclick="go(9)">I Love You 💖</button>
+    <button class="btn" id="couponBtn" style="font-size:1.1rem;padding:.85rem 2.5rem;" onclick="go(9)">I Love You 💖</button>
   </div>
 </div>
 
@@ -423,19 +561,23 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 <div class="screen" id="s9">
   <div class="final-wrap">
     <div style="font-size:3.5rem;margin-bottom:1rem;">🌹</div>
-    <h1>Happy Birthday,<br>My Love 💕</h1>
+    <h1 id="s9Title">Happy Birthday,<br>My Love 💕</h1>
     <div class="petal-row" style="font-size:1.7rem;margin:.75rem 0;">💕 🌸 💕 🌹 💕</div>
-    <div class="final-msg">
+    <div class="days-counter">
+      <div class="days-num" id="daysNum">0</div>
+      <div class="days-label" id="daysLabel">days together</div>
+    </div>
+    <div class="final-msg" id="s9Quote">
       "You are not just someone I love —<br>
       you are someone I choose, every single day,<br>
       with full knowledge of who I am<br>
       and everything I have been through."
     </div>
-    <p style="color:#777;margin:1.25rem 0;font-size:.95rem;line-height:1.7;">
+    <p id="s9Msg" style="color:#777;margin:1.25rem 0;font-size:.95rem;line-height:1.7;">
       Thank you for seeing me, accepting me, and loving me.<br>
       Here's to us — now, and for all the beautiful days to come. 🌹
     </p>
-    <p style="font-family:'Playfair Display',serif;color:var(--red);font-size:1.4rem;margin:1.5rem 0;font-style:italic;">
+    <p id="s9Sign" style="font-family:'Playfair Display',serif;color:var(--red);font-size:1.4rem;margin:1.5rem 0;font-style:italic;">
       Forever yours,<br>Fernando 💕
     </p>
     <div style="font-size:2rem;animation:sway 2s ease-in-out infinite;margin-top:1rem;">🌹 💖 🌹</div>
@@ -455,31 +597,334 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 
 <script>
 // ============================================================
+// DEV MODE — set to false before sending to Miranda!
+// ============================================================
+const DEV_MODE = true;
+
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+const LANG = {
+  en: {
+    lockTitle: 'This Gift is Locked',
+    lockMsg: 'This website was made for one very special day only.<br>It will open on <strong>12 May 2026</strong> — Miranda\'s birthday. 🌹',
+    opensIn: 'Opens in',
+    days: 'Days', hours: 'Hours', mins: 'Mins', secs: 'Secs',
+    lockFooter: 'Come back on her birthday 💕',
+    cheatTitle: 'Nice Try!',
+    cheatMsg: 'Your clock says it\'s May 12th, but the internet disagrees.<br><br><strong>No shortcuts allowed</strong> — this gift is for the real day.<br>Come back when it\'s truly her birthday. 🌹',
+    s0Title: 'Happy Birthday,<br>Miranda! 🌹',
+    s0Sub: 'A gift crafted with all my love',
+    s0Body: 'Welcome to your birthday adventure. 💕<br><br>Inside this gift are <strong>four games</strong>, each guarding a special surprise.<br>Win each game to unlock what\'s hidden behind it. 🌹<br><br>Take your time. This was made with love, just for you.',
+    s0Btn: 'Begin Your Journey 🌸',
+    g1Title: '💕 Catch the Hearts',
+    g1Hint: 'Catch <strong>15 hearts</strong> to unlock our love story timeline ✨',
+    g1ScoreLabel: 'Caught',
+    g1Start: 'Start Game 💕',
+    g1Win: '💕 You caught them all!',
+    s2Title: 'Our Story 💕',
+    tl1Title: 'The First Hello',
+    tl1Body: 'A match on Coffee Meet Bagel — a small notification that quietly changed everything. Two strangers, one app, and a universe full of possibility.',
+    tl2Title: 'First Date at AEON Sentul',
+    tl2Body: 'Nervous smiles, warm conversations, and the feeling that time moved differently. Jakarta had never felt so full of magic.',
+    tl3Title: 'She Said Yes (Mid-Salmon)',
+    tl3Body: 'Most proposals come with candles and roses. This one happened at Sushi Hiro, while Miranda was deep in a salmon head — with her bare hands. She looked up, heard the question, and said yes. Fernando knew right then. She was the one.',
+    tl4Title: 'Their First Valentine\'s Together',
+    tl4Body: 'The first of many. A day spent simply being together, and realizing that ordinary moments feel extraordinary with the right person.',
+    tl5Date: 'Today & Always',
+    tl5Title: 'To Be Continued...',
+    tl5Body: 'Some stories don\'t have an ending — they just keep going, page after page, day after day. This is one of those stories. And it\'s only just begun.',
+    nextChallenge: 'Next Challenge 🎮',
+    g2Title: '🌸 Memory Flip',
+    g2Hint: 'Match all <strong>8 pairs</strong> to unlock a love letter written just for you 💌',
+    g2ScoreLabel: 'Pairs found',
+    g2Start: 'Start Game 🌸',
+    g2Win: '💌 All pairs matched!',
+    s4Title: '💌 A Letter For You',
+    letterSkip: '(tap the letter to skip ahead)',
+    g3Title: '🔤 Word Scramble',
+    g3Hint: 'Unscramble all <strong>5 words</strong> to unlock our photo album 📸',
+    wordLabel: 'Word', ofLabel: 'of',
+    g3Placeholder: 'Type your answer…',
+    g3Check: 'Check ✓',
+    g3Correct: '✅ Correct!', g3Wrong: '❌ Try again!', g3Win: '📸 All words solved!',
+    wh1: 'Her name 💕', wh2: 'His name 💪', wh3: 'The app where they first met ☕',
+    wh4: 'Their first date location 🛍️', wh5: "What they'll be 💖",
+    s6Title: '📸 Our Memories',
+    s6Sub: 'Moments that will live in my heart forever',
+    finalChallenge: 'Final Challenge 🎮',
+    g4Title: '🌱 Merge & Bloom',
+    g4Hint: 'Merge flowers to earn <strong>8 points</strong> and unlock your special wish 🎁<br><small style="color:#bbb;">Click a flower, then click a matching flower to merge them!</small>',
+    g4ScoreLabel: 'Score', g4MergesLabel: 'merges',
+    g4Start: 'Start Game 🌱',
+    g4Bloom: '💐 Perfect bloom!', g4Merged: 'Merged!',
+    g4NoMatch: 'Match two of the same flower!', g4Win: '🌹 You bloomed with love!',
+    s8Title: '🎁 Your Wish',
+    couponTitle: '❤️ Love Coupon ❤️',
+    couponSub: 'You have earned one wish — no questions asked,<br>no limits, no expiry date.',
+    couponCode: '"Your Wish is My Command"',
+    couponFooter: 'Redeemable anytime. Valid forever. From Fernando, with all his love. 💕',
+    couponBtn: 'I Love You 💖',
+    s9Title: 'Happy Birthday,<br>My Love 💕',
+    s9Quote: '"You are not just someone I love —<br>you are someone I choose, every single day,<br>with full knowledge of who I am<br>and everything I have been through."',
+    s9Msg: 'Thank you for seeing me, accepting me, and loving me.<br>Here\'s to us — now, and for all the beautiful days to come. 🌹',
+    s9Sign: 'Forever yours,<br>Fernando 💕',
+    celeb0Title: 'You Unlocked Our Timeline!',
+    celeb0Sub: 'Discover the beautiful moments that brought us together...',
+    celeb0Btn: 'Explore Our Story 💕',
+    celeb1Title: 'You Unlocked the Love Letter!',
+    celeb1Sub: 'Words written from my heart, just for you...',
+    celeb1Btn: 'Read My Letter 💕',
+    celeb2Title: 'You Unlocked Our Album!',
+    celeb2Sub: 'Memories we\'ve made, captured in time...',
+    celeb2Btn: 'View Our Memories 💕',
+    celeb3Title: 'You Unlocked Your Wish!',
+    celeb3Sub: 'One wish, waiting to be claimed with love...',
+    celeb3Btn: 'Claim Your Gift 💕',
+    tapClose: 'Tap to close',
+    daysLabel: 'days together',
+    letter: `My Dearest Miranda,
+
+If someone had told me a year ago that I would find someone so extraordinary, I would have smiled politely and kept the doubt to myself. I had carried the weight of my past — chapters I could not rewrite, scars I did not always know how to hide. And yet, here you are.
+
+You found me on a November afternoon through a little app called Coffee Meet Bagel, and something quietly changed. On the 29th of November, you walked into AEON Sentul — and into my life. On the 21st of December, you said yes. Not to who I was pretending to be, but to who I truly am. All of me. Even the parts I feared would be too much.
+
+You did not just accept my past. You embraced it. You showed me that a second chance at love is not a consolation prize — it is something richer, something that could only exist because of everything we have lived through separately.
+
+And then slowly, beautifully, the small moments began to add up. The conversations that stretched past midnight. The laughter that caught me off guard. The quiet comfort of simply being near you. I began to understand that home is not always a place — sometimes it is a person.
+
+Miranda, you are the flowers in every garden I walk through. You are the red that makes everything more vivid. You are the reason I believe that the best stories do not always begin on the first page.
+
+Happy Birthday, my love. Here is to a lifetime of chapters — written together, one beautiful day at a time.
+
+Forever yours,
+Fernando \u{1F495}`
+  },
+  id: {
+    lockTitle: 'Hadiah Ini Terkunci',
+    lockMsg: 'Website ini dibuat untuk satu hari yang sangat istimewa.<br>Akan terbuka pada <strong>12 Mei 2026</strong> — hari ulang tahun Miranda. 🌹',
+    opensIn: 'Terbuka dalam',
+    days: 'Hari', hours: 'Jam', mins: 'Menit', secs: 'Detik',
+    lockFooter: 'Kembali di hari ulang tahunnya 💕',
+    cheatTitle: 'Tidak Bisa!',
+    cheatMsg: 'Jammu menunjukkan 12 Mei, tapi server tidak setuju.<br><br><strong>Tidak ada jalan pintas</strong> — hadiah ini untuk hari yang sesungguhnya.<br>Kembalilah saat benar-benar hari ulang tahunnya. 🌹',
+    s0Title: 'Selamat Ulang Tahun,<br>Miranda! 🌹',
+    s0Sub: 'Hadiah yang dibuat dengan sepenuh cinta',
+    s0Body: 'Selamat datang di petualangan ulang tahunmu. 💕<br><br>Di dalam hadiah ini ada <strong>empat permainan</strong>, masing-masing menyimpan kejutan spesial.<br>Menangkan setiap permainan untuk membuka apa yang tersembunyi di baliknya. 🌹<br><br>Ambil waktumu. Ini dibuat dengan cinta, khusus untukmu.',
+    s0Btn: 'Mulai Petualanganmu 🌸',
+    g1Title: '💕 Tangkap Hati',
+    g1Hint: 'Tangkap <strong>15 hati</strong> untuk membuka kisah cinta kita ✨',
+    g1ScoreLabel: 'Tertangkap',
+    g1Start: 'Mulai Permainan 💕',
+    g1Win: '💕 Kamu menangkap semuanya!',
+    s2Title: 'Kisah Kita 💕',
+    tl1Title: 'Sapa Pertama',
+    tl1Body: 'Sebuah kecocokan di Coffee Meet Bagel — notifikasi kecil yang diam-diam mengubah segalanya. Dua orang asing, satu aplikasi, dan semesta penuh kemungkinan.',
+    tl2Title: 'Kencan Pertama di AEON Sentul',
+    tl2Body: 'Senyum gugup, percakapan hangat, dan perasaan bahwa waktu bergerak berbeda. Jakarta terasa begitu penuh keajaiban.',
+    tl3Title: 'Ia Bilang Ya (Di Sela Makan Salmon)',
+    tl3Body: 'Kebanyakan lamaran datang dengan lilin dan bunga. Yang satu ini terjadi di Sushi Hiro, saat Miranda tengah asyik melahap kepala salmon — dengan tangannya sendiri. Ia mendongak, mendengar pertanyaan itu, dan bilang ya. Fernando tahu saat itu juga. Ia adalah orangnya.',
+    tl4Title: 'Valentine Pertama Mereka Bersama',
+    tl4Body: 'Yang pertama dari banyak lagi. Sehari yang dihabiskan hanya untuk bersama, dan menyadari bahwa momen-momen biasa terasa luar biasa bersama orang yang tepat.',
+    tl5Date: 'Hari Ini & Selamanya',
+    tl5Title: 'Bersambung...',
+    tl5Body: 'Ada cerita yang tidak punya akhir — hanya terus berlanjut, halaman demi halaman, hari demi hari. Inilah salah satunya. Dan ini baru saja dimulai.',
+    nextChallenge: 'Tantangan Berikutnya 🎮',
+    g2Title: '🌸 Balik Kartu',
+    g2Hint: 'Cocokkan semua <strong>8 pasang</strong> untuk membuka surat cinta yang ditulis khusus untukmu 💌',
+    g2ScoreLabel: 'Pasangan ditemukan',
+    g2Start: 'Mulai Permainan 🌸',
+    g2Win: '💌 Semua pasangan ditemukan!',
+    s4Title: '💌 Surat Untukmu',
+    letterSkip: '(ketuk surat untuk melewati)',
+    g3Title: '🔤 Susun Kata',
+    g3Hint: 'Susun semua <strong>5 kata</strong> untuk membuka album foto kita 📸',
+    wordLabel: 'Kata', ofLabel: 'dari',
+    g3Placeholder: 'Ketik jawabanmu…',
+    g3Check: 'Cek ✓',
+    g3Correct: '✅ Benar!', g3Wrong: '❌ Coba lagi!', g3Win: '📸 Semua kata terpecahkan!',
+    wh1: 'Namanya 💕', wh2: 'Namanya 💪', wh3: 'Aplikasi tempat mereka pertama bertemu ☕',
+    wh4: 'Lokasi kencan pertama mereka 🛍️', wh5: 'Apa yang akan mereka jadi 💖',
+    s6Title: '📸 Kenangan Kita',
+    s6Sub: 'Momen yang akan hidup selamanya di hatiku',
+    finalChallenge: 'Tantangan Terakhir 🎮',
+    g4Title: '🌱 Gabung & Mekar',
+    g4Hint: 'Gabungkan bunga untuk mendapat <strong>8 poin</strong> dan buka hadiahmu 🎁<br><small style="color:#bbb;">Klik sebuah bunga, lalu klik bunga yang sama untuk menggabungkannya!</small>',
+    g4ScoreLabel: 'Skor', g4MergesLabel: 'gabungan',
+    g4Start: 'Mulai Permainan 🌱',
+    g4Bloom: '💐 Mekar sempurna!', g4Merged: 'Tergabung!',
+    g4NoMatch: 'Cocokkan dua bunga yang sama!', g4Win: '🌹 Kamu mekar dengan cinta!',
+    s8Title: '🎁 Keinginanmu',
+    couponTitle: '❤️ Kupon Cinta ❤️',
+    couponSub: 'Kamu telah mendapatkan satu keinginan — tanpa pertanyaan,<br>tanpa batas, tanpa tanggal kadaluarsa.',
+    couponCode: '"Keinginanmu adalah Perintahku"',
+    couponFooter: 'Bisa digunakan kapan saja. Berlaku selamanya. Dari Fernando, dengan sepenuh cintanya. 💕',
+    couponBtn: 'Aku Cinta Kamu 💖',
+    s9Title: 'Selamat Ulang Tahun,<br>Cintaku 💕',
+    s9Quote: '"Kamu bukan sekadar seseorang yang kucintai —<br>kamu adalah seseorang yang kupilih, setiap hari,<br>dengan penuh kesadaran tentang siapa aku<br>dan semua yang pernah kulalui."',
+    s9Msg: 'Terima kasih telah melihatku, menerimaku, dan mencintaiku.<br>Ini untuk kita — sekarang, dan untuk semua hari indah yang akan datang. 🌹',
+    s9Sign: 'Selamanya milikmu,<br>Fernando 💕',
+    celeb0Title: 'Kamu Membuka Kisah Kita!',
+    celeb0Sub: 'Temukan momen-momen indah yang menyatukan kita...',
+    celeb0Btn: 'Jelajahi Kisah Kita 💕',
+    celeb1Title: 'Kamu Membuka Surat Cinta!',
+    celeb1Sub: 'Kata-kata dari hatiku, khusus untukmu...',
+    celeb1Btn: 'Baca Suratku 💕',
+    celeb2Title: 'Kamu Membuka Album Kita!',
+    celeb2Sub: 'Kenangan yang kita buat, terabadikan...',
+    celeb2Btn: 'Lihat Kenangan Kita 💕',
+    celeb3Title: 'Kamu Membuka Keinginanmu!',
+    celeb3Sub: 'Satu keinginan, menunggu untuk diklaim dengan cinta...',
+    celeb3Btn: 'Ambil Hadiahmu 💕',
+    tapClose: 'Ketuk untuk tutup',
+    daysLabel: 'hari bersama',
+    letter: `Miranda yang Terkasih,
+
+Kalau seseorang memberitahuku setahun yang lalu bahwa aku akan menemukan seseorang yang luar biasa sepertimu, aku hanya akan tersenyum sopan sambil menyimpan keraguan dalam hati. Aku pernah menanggung beban masa laluku — halaman-halaman yang tak bisa kutulis ulang, luka yang tak selalu tahu cara kusembunyikan. Namun, kini kamu ada di sini.
+
+Kamu menemukanku di suatu sore November lewat sebuah aplikasi bernama Coffee Meet Bagel, dan sesuatu pun berubah dengan tenang. Pada 29 November, kamu melangkah masuk ke AEON Sentul — dan ke dalam hidupku. Pada 21 Desember, kamu berkata ya. Bukan untuk sosok yang pura-pura aku tampilkan, tapi untuk diriku yang sesungguhnya. Seluruh diriku. Bahkan bagian yang aku takutkan terlalu berat untuk diterima.
+
+Kamu tidak hanya menerima masa laluku. Kamu merangkulnya. Kamu mengajariku bahwa kesempatan kedua dalam cinta bukan sebuah hadiah hiburan — melainkan sesuatu yang lebih dalam, sesuatu yang hanya bisa ada karena semua yang telah kita jalani masing-masing.
+
+Lalu perlahan, dengan indahnya, momen-momen kecil itu mulai bertambah. Percakapan yang berlanjut hingga lewat tengah malam. Tawa yang datang tiba-tiba. Ketenangan yang hadir sekadar dari keberadaanmu di dekatku. Aku pun mulai mengerti bahwa rumah tidak selalu berupa tempat — terkadang, rumah adalah seseorang.
+
+Miranda, kamu adalah bunga di setiap taman yang aku lalui. Kamu adalah merah yang membuat segalanya terasa lebih hidup. Kamu adalah alasan aku percaya bahwa cerita terbaik tidak selalu dimulai dari halaman pertama.
+
+Selamat Ulang Tahun, cintaku. Ini untuk seumur hidup bab-bab yang akan kita tulis bersama — indah, satu hari demi satu hari.
+
+Selamanya milikmu,
+Fernando \u{1F495}`
+  }
+};
+
+let currentLang = 'en';
+function t(key) { return (LANG[currentLang][key] !== undefined ? LANG[currentLang][key] : LANG.en[key]) || key; }
+
+function toggleLang() { setLang(currentLang === 'en' ? 'id' : 'en'); }
+
+function setLang(l) {
+  currentLang = l;
+  document.documentElement.lang = l;
+  renderLang();
+}
+
+function renderLang() {
+  const $ = id => document.getElementById(id);
+  $('langBtn').textContent = currentLang === 'en' ? 'EN' : 'ID';
+  // Lock
+  $('lockTitle').textContent = t('lockTitle');
+  $('lockMsg').innerHTML = t('lockMsg');
+  $('cntLabel').textContent = t('opensIn');
+  $('cntDLabel').textContent = t('days');
+  $('cntHLabel').textContent = t('hours');
+  $('cntMLabel').textContent = t('mins');
+  $('cntSLabel').textContent = t('secs');
+  $('lockFooter').textContent = t('lockFooter');
+  $('cheatTitle').textContent = t('cheatTitle');
+  $('cheatBox').innerHTML = t('cheatMsg');
+  // S0
+  $('s0Title').innerHTML = t('s0Title');
+  $('s0Sub').textContent = t('s0Sub');
+  $('s0Body').innerHTML = t('s0Body');
+  $('s0Btn').textContent = t('s0Btn');
+  // G1
+  $('g1Title').textContent = t('g1Title');
+  $('g1Hint').innerHTML = t('g1Hint');
+  $('g1ScoreLabel').textContent = t('g1ScoreLabel');
+  $('chStartBtn').textContent = t('g1Start');
+  // S2
+  $('s2Title').innerHTML = t('s2Title');
+  $('tl1Title').textContent = t('tl1Title');
+  $('tl1Body').textContent = t('tl1Body');
+  $('tl2Title').textContent = t('tl2Title');
+  $('tl2Body').textContent = t('tl2Body');
+  $('tl3Title').textContent = t('tl3Title');
+  $('tl3Body').textContent = t('tl3Body');
+  $('tl4Title').textContent = t('tl4Title');
+  $('tl4Body').textContent = t('tl4Body');
+  $('tl5Date').textContent = t('tl5Date');
+  $('tl5Title').textContent = t('tl5Title');
+  $('tl5Body').textContent = t('tl5Body');
+  $('s2NextBtn').textContent = t('nextChallenge');
+  // G2
+  $('g2Title').textContent = t('g2Title');
+  $('g2Hint').innerHTML = t('g2Hint');
+  $('g2ScoreLabel').textContent = t('g2ScoreLabel');
+  $('mfStartBtn').textContent = t('g2Start');
+  // S4
+  $('s4Title').textContent = t('s4Title');
+  $('letterNextBtn').textContent = t('nextChallenge');
+  // G3
+  $('g3Title').textContent = t('g3Title');
+  $('g3Hint').innerHTML = t('g3Hint');
+  $('scrambleInput').placeholder = t('g3Placeholder');
+  $('g3CheckBtn').textContent = t('g3Check');
+  // S6
+  $('s6Title').textContent = t('s6Title');
+  $('s6Sub').textContent = t('s6Sub');
+  $('s6FinalBtn').textContent = t('finalChallenge');
+  // G4
+  $('g4Title').textContent = t('g4Title');
+  $('g4Hint').innerHTML = t('g4Hint');
+  $('g4ScoreLabel').textContent = t('g4ScoreLabel');
+  $('g4MergesLabel').textContent = t('g4MergesLabel');
+  $('mgStartBtn').textContent = t('g4Start');
+  // S8
+  $('s8Title').textContent = t('s8Title');
+  $('couponTitle').textContent = t('couponTitle');
+  $('couponSub').innerHTML = t('couponSub');
+  $('couponCode').textContent = t('couponCode');
+  $('couponFooter').textContent = t('couponFooter');
+  $('couponBtn').textContent = t('couponBtn');
+  // S9
+  $('daysLabel').textContent = t('daysLabel');
+  $('s9Title').innerHTML = t('s9Title');
+  $('s9Quote').innerHTML = t('s9Quote');
+  $('s9Msg').innerHTML = t('s9Msg');
+  $('s9Sign').innerHTML = t('s9Sign');
+}
+
+// ============================================================
 // CORE
 // ============================================================
 const TOTAL = 10;
 let cur = 0;
 let celebTarget = 0;
 
+let transitioning = false;
+
 function go(i) {
+  if (transitioning) return;
+  transitioning = true;
+
   // Cleanup leaving screen
   if (cur === 1 && CH.running) { CH.running = false; cancelAnimationFrame(CH.raf); }
   if (cur === 4 && LT.timer) { clearInterval(LT.timer); LT.timer = null; }
   if (cur === 7 && MG.si) { clearInterval(MG.si); MG.running = false; }
 
-  document.getElementById('s' + cur).classList.remove('on');
-  cur = i;
-  document.getElementById('s' + i).classList.add('on');
-  window.scrollTo(0, 0);
-  document.getElementById('prog').style.width = (i / (TOTAL - 1) * 100) + '%';
-  document.querySelectorAll('.dot').forEach((d, j) => d.classList.toggle('on', j === i));
+  const leaving = document.getElementById('s' + cur);
+  leaving.classList.add('s-out');
 
-  // Init entering screen
-  if (i === 1) setupCatch();
-  if (i === 3) setupMemory();
-  if (i === 4) startLetter();
-  if (i === 5) setupScramble();
-  if (i === 7) setupMerge();
+  setTimeout(() => {
+    leaving.classList.remove('on', 's-out');
+    cur = i;
+    const entering = document.getElementById('s' + cur);
+    entering.classList.add('on', 's-in');
+    window.scrollTo(0, 0);
+    document.getElementById('prog').style.width = (cur / (TOTAL - 1) * 100) + '%';
+    document.querySelectorAll('.dot').forEach((d, j) => d.classList.toggle('on', j === cur));
+
+    if (cur === 1) setupCatch();
+    if (cur === 3) setupMemory();
+    if (cur === 4) startLetter();
+    if (cur === 5) setupScramble();
+    if (cur === 6) buildAlbum();
+    if (cur === 7) setupMerge();
+    if (cur === 8) setTimeout(initScratch, 350);
+    if (cur === 9) startDaysCounter();
+
+    setTimeout(() => { entering.classList.remove('s-in'); transitioning = false; }, 400);
+  }, 280);
 }
 
 function buildDots() {
@@ -495,14 +940,14 @@ function buildDots() {
 // ============================================================
 // LOCK SCREEN & DATE CHECK
 // ============================================================
-const TARGET_DATE = new Date('2026-05-12T00:00:00+08:00');
+const TARGET_DATE = new Date('2026-05-12T00:00:00+07:00');
 let cntInterval = null;
 
 async function checkDate() {
   try {
     const ctrl = new AbortController();
     const tid = setTimeout(() => ctrl.abort(), 6000);
-    const res = await fetch('https://worldtimeapi.org/api/timezone/Asia/Kuala_Lumpur', { signal: ctrl.signal });
+    const res = await fetch('https://worldtimeapi.org/api/timezone/Asia/Jakarta', { signal: ctrl.signal });
     clearTimeout(tid);
     const data = await res.json();
     const sv = new Date(data.datetime);
@@ -532,17 +977,37 @@ function showCheat() {
 function unlockApp() {
   clearInterval(cntInterval);
   const ls = document.getElementById('lockScreen');
-  ls.style.transition = 'opacity .9s ease';
-  ls.style.opacity = '0';
-  setTimeout(() => { ls.style.display = 'none'; }, 900);
+
+  // Burst hearts from center
+  const emojis = ['💕','🌸','🌹','❤️','✨','💖','🌺'];
+  for (let i = 0; i < 14; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'burst-heart';
+      el.textContent = emojis[Math.random() * emojis.length | 0];
+      const angle = Math.random() * 360;
+      const dist = 90 + Math.random() * 130;
+      el.style.left = '50vw'; el.style.top = '50vh';
+      el.style.setProperty('--tx', (Math.cos(angle * Math.PI / 180) * dist) + 'px');
+      el.style.setProperty('--ty', (Math.sin(angle * Math.PI / 180) * dist) + 'px');
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }, i * 55);
+  }
+
+  ls.classList.add('revealing');
+  setTimeout(() => {
+    ls.style.display = 'none';
+    ls.classList.remove('revealing');
+  }, 900);
+
   document.getElementById('musicBtn').style.display = 'flex';
   document.getElementById('nav').style.display = 'block';
   document.getElementById('dots').style.display = 'flex';
   buildDots();
   document.getElementById('s0').classList.add('on');
   spawnPetals();
-
-  MP.play(); 
+  MP.play();
 }
 
 function startCountdown() {
@@ -584,20 +1049,14 @@ function spawnPetals() {
 // ============================================================
 // CELEBRATION
 // ============================================================
-const CELEB = [
-  { emoji: '✨', title: 'You Unlocked Our Timeline!', sub: 'Discover the beautiful moments that brought us together...', btn: 'Explore Our Story 💕' },
-  { emoji: '💌', title: 'You Unlocked the Love Letter!', sub: 'Words written from my heart, just for you...', btn: 'Read My Letter 💕' },
-  { emoji: '📸', title: 'You Unlocked Our Album!', sub: 'Memories we\'ve made, captured in time...', btn: 'View Our Memories 💕' },
-  { emoji: '🎁', title: 'You Unlocked Your Wish!', sub: 'One wish, waiting to be claimed with love...', btn: 'Claim Your Gift 💕' },
-];
+const CELEB_EMOJI = ['✨','💌','📸','🎁'];
 
 function showCeleb(idx, next) {
   celebTarget = next;
-  const c = CELEB[idx];
-  document.getElementById('celebEmoji').textContent = c.emoji;
-  document.getElementById('celebTitle').textContent = c.title;
-  document.getElementById('celebSub').textContent = c.sub;
-  document.getElementById('celebBtn').textContent = c.btn;
+  document.getElementById('celebEmoji').textContent = CELEB_EMOJI[idx];
+  document.getElementById('celebTitle').textContent = t('celeb' + idx + 'Title');
+  document.getElementById('celebSub').textContent = t('celeb' + idx + 'Sub');
+  document.getElementById('celebBtn').textContent = t('celeb' + idx + 'Btn');
   document.getElementById('celebOverlay').classList.add('show');
   // Confetti
   const cc = document.getElementById('celebConfetti');
@@ -686,12 +1145,14 @@ function setupCatch() {
         const dx = p.x - h.x, dy = p.y - h.y;
         if (Math.sqrt(dx*dx + dy*dy) < 28) {
           CH.score++;
+          playSound('catch');
           document.getElementById('chScore').textContent = CH.score;
           if (CH.score >= 15) {
             CH.running = false;
             cancelAnimationFrame(CH.raf);
             document.getElementById('chStartBtn').style.display = 'none';
-            document.getElementById('chMsg').textContent = '💕 You caught them all!';
+            document.getElementById('chMsg').textContent = t('g1Win');
+            playSound('win');
             setTimeout(() => showCeleb(0, 2), 800);
           }
           return false;
@@ -774,9 +1235,11 @@ function startMemory() {
         if (a.dataset.val === b.dataset.val) {
           a.classList.add('matched'); b.classList.add('matched');
           MF.flipped = []; MF.locked = false; MF.matched++;
+          playSound('match');
           document.getElementById('mfPairs').textContent = MF.matched;
           if (MF.matched === 8) {
-            document.getElementById('mfMsg').textContent = '💌 All pairs matched!';
+            document.getElementById('mfMsg').textContent = t('g2Win');
+            playSound('win');
             setTimeout(() => showCeleb(1, 4), 800);
           }
         } else {
@@ -796,11 +1259,11 @@ function startMemory() {
 // GAME 3: WORD SCRAMBLE
 // ============================================================
 const WLIST = [
-  { w: 'MIRANDA',  h: 'Her name 💕',                         s: 'ADRANIM'  },
-  { w: 'FERNANDO', h: 'His name 💪',                         s: 'ODNREANF' },
-  { w: 'COFFEE',   h: 'The app where they first met ☕',      s: 'EEOCFF'   },
-  { w: 'SENTUL',   h: 'Their first date location 🛍️',        s: 'LUNEST'   },
-  { w: 'FOREVER',  h: "What they'll be 💖",                   s: 'ERFOREV'  },
+  { w: 'MIRANDA',  h: 'Her name 💕',                         s: 'ANRDIAM'  },
+  { w: 'FERNANDO', h: 'His name 💪',                         s: 'ENNOFRDA' },
+  { w: 'CMB',   h: 'The app where they first met ☕',      s: 'MBC'   },
+  { w: 'SENTUL',   h: 'Their first date location 🛍️',        s: 'TEUSLN'   },
+  { w: 'FOREVER',  h: "What they'll be 💖",                   s: 'EOVRFRE'  },
 ];
 let WS = { idx: 0, solved: 0 };
 
@@ -812,11 +1275,11 @@ function setupScramble() {
 function showWord() {
   const w = WLIST[WS.idx];
   document.getElementById('scrambleWord').textContent = w.s;
-  document.getElementById('scrambleHint').textContent = '💡 ' + w.h;
+  document.getElementById('scrambleHint').textContent = '💡 ' + t('wh' + (WS.idx + 1));
   document.getElementById('scrambleInput').value = '';
   document.getElementById('scrambleFeedback').textContent = '';
   document.getElementById('scrambleFeedback').className = 'scramble-feedback';
-  document.getElementById('wsProgress').textContent = 'Word ' + (WS.idx + 1) + ' of ' + WLIST.length;
+  document.getElementById('wsProgress').textContent = t('wordLabel') + ' ' + (WS.idx + 1) + ' ' + t('ofLabel') + ' ' + WLIST.length;
   document.getElementById('scrambleInput').focus();
 }
 
@@ -825,27 +1288,25 @@ function checkScramble() {
   const fb = document.getElementById('scrambleFeedback');
   if (!val) return;
   if (val === WLIST[WS.idx].w) {
-    fb.textContent = '✅ Correct!'; fb.className = 'scramble-feedback ok';
+    playSound('correct');
+    fb.textContent = t('g3Correct'); fb.className = 'scramble-feedback ok';
     WS.solved++;
     setTimeout(() => {
       WS.idx++;
       if (WS.idx >= WLIST.length) {
-        fb.textContent = '📸 All words solved!';
+        fb.textContent = t('g3Win');
+        playSound('win');
         setTimeout(() => showCeleb(2, 6), 800);
       } else {
         showWord();
       }
     }, 600);
   } else {
-    fb.textContent = '❌ Try again!'; fb.className = 'scramble-feedback no';
+    fb.textContent = t('g3Wrong'); fb.className = 'scramble-feedback no';
     document.getElementById('scrambleInput').value = '';
   }
 }
 
-function skipScramble() {
-  WS.idx = (WS.idx + 1) % WLIST.length;
-  showWord();
-}
 
 // ============================================================
 // GAME 4: MERGE & BLOOM
@@ -910,15 +1371,17 @@ function mergeTap(idx) {
       const newLv = Math.min(MG.grid[a] + 1, 5);
       MG.grid[b] = newLv; MG.grid[a] = 0; MG.sel = -1;
       MG.score++; document.getElementById('mgScore').textContent = MG.score;
-      msg.textContent = newLv === 5 ? '💐 Perfect bloom!' : (MG_EM[newLv - 1] + ' Merged!');
+      playSound('merge');
+      msg.textContent = newLv === 5 ? t('g4Bloom') : (MG_EM[newLv - 1] + ' ' + t('g4Merged'));
       renderMerge();
       if (MG.score >= 8) {
         MG.running = false; clearInterval(MG.si);
-        msg.textContent = '🌹 You bloomed with love!';
+        msg.textContent = t('g4Win');
+        playSound('win');
         setTimeout(() => showCeleb(3, 8), 900);
       }
     } else {
-      msg.textContent = 'Match two of the same flower!';
+      msg.textContent = t('g4NoMatch');
       MG.sel = idx; renderMerge();
     }
   }
@@ -927,26 +1390,10 @@ function mergeTap(idx) {
 // ============================================================
 // LOVE LETTER
 // ============================================================
-const LETTER = `My Dearest Miranda,
-
-If someone had told me a year ago that I would find someone so extraordinary, I would have smiled politely and kept the doubt to myself. I had carried the weight of my past — chapters I could not rewrite, scars I did not always know how to hide. And yet, here you are.
-
-You found me on a November afternoon through a little app called Coffee Meet Bagel, and something quietly changed. On the 29th of November, you walked into AEON Sentul — and into my life. On the 21st of December, you said yes. Not to who I was pretending to be, but to who I truly am. All of me. Even the parts I feared would be too much.
-
-You did not just accept my past. You embraced it. You showed me that a second chance at love is not a consolation prize — it is something richer, something that could only exist because of everything we have lived through separately.
-
-And then February came, and I brought you home to Jakarta. You walked the streets I grew up on, tasted the food I love, and saw the boy behind the man. That trip will live in my heart forever.
-
-Miranda, you are the flowers in every garden I walk through. You are the red that makes everything more vivid. You are the reason I believe that the best stories do not always begin on the first page.
-
-Happy Birthday, my love. Here is to a lifetime of chapters — written together, one beautiful day at a time.
-
-Forever yours,
-Fernando \u{1F495}`;
-
 const LT = { timer: null, idx: 0 };
 
 function startLetter() {
+  const letter = t('letter');
   const body = document.getElementById('letterBody');
   const cursor = document.getElementById('letterCursor');
   const nextBtn = document.getElementById('letterNextBtn');
@@ -954,48 +1401,322 @@ function startLetter() {
   LT.idx = 0;
   if (LT.timer) clearInterval(LT.timer);
 
-  body.onclick = () => {
-    if (LT.timer) {
-      clearInterval(LT.timer); LT.timer = null;
-      body.textContent = LETTER;
-      cursor.style.display = 'none'; nextBtn.style.display = 'inline-block';
-    }
-  };
-
   LT.timer = setInterval(() => {
-    if (LT.idx >= LETTER.length) {
+    if (LT.idx >= letter.length) {
       clearInterval(LT.timer); LT.timer = null;
       cursor.style.display = 'none'; nextBtn.style.display = 'inline-block';
       return;
     }
-    body.textContent += LETTER[LT.idx++];
-    // Auto-scroll within letter
+    body.textContent += letter[LT.idx++];
     const wrap = body.parentElement;
     wrap.scrollTop = wrap.scrollHeight;
   }, 28);
 }
 
 // ============================================================
-// PHOTO LIGHTBOX
+// PHOTO ALBUM & LIGHTBOX
 // ============================================================
-function openPhoto(src) {
-  const box = document.getElementById('photoBox');
-  const img = document.getElementById('photoBoxImg');
-  img.src = src; img.alt = 'Memory';
-  img.onerror = () => { img.src = ''; img.alt = 'Photo not found 📷'; };
-  box.style.display = 'flex';
+// Add your files here — use type:'photo' or type:'video'
+const MEDIA = [
+  {type:'photo', src:'photo1.jpg'},
+  {type:'photo', src:'photo2.jpg'},
+  {type:'photo', src:'photo3.jpg'},
+  {type:'photo', src:'photo4.jpg'},
+  {type:'photo', src:'photo5.jpg'},
+  {type:'photo', src:'photo6.jpg'},
+  {type:'photo', src:'photo7.jpg'},
+  {type:'photo', src:'photo8.jpg'},
+  {type:'photo', src:'photo9.jpg'},
+  {type:'photo', src:'photo10.jpg'},
+  {type:'photo', src:'photo11.jpg'},
+  {type:'photo', src:'photo12.jpg'},
+  {type:'video', src:'video1.mp4'},
+];
+
+const PH_ICONS = ['🌹','💕','🌸','💖','🌺','✨','💗','🌼','💞','🌷','💓','🌻','🎬'];
+const ROTS = [-2.5,-1.2,1.8,-0.7,2.2,0.6,-1.9,1.4,-2.1,0.9,2.4,-0.5,1.1];
+
+function buildAlbum() {
+  const grid = document.getElementById('albumGrid');
+  grid.innerHTML = '';
+  MEDIA.forEach((m, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'album-slot' + (m.type === 'video' ? ' vid-slot' : '');
+    const rot = ROTS[i % ROTS.length];
+    slot.style.setProperty('--rot', rot + 'deg');
+    slot.style.animationDelay = (i * 0.06) + 's';
+    slot.onclick = () => openMedia(i);
+    if (m.type === 'photo') {
+      slot.innerHTML = `<div class="slot-inner">
+        <img src="${m.src}" alt="Memory ${i+1}"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="slot-ph" style="display:none;">
+          <div class="slot-ph-icon">${PH_ICONS[i % PH_ICONS.length]}</div>
+          <div class="slot-ph-name">${m.src}</div>
+        </div>
+      </div>`;
+    } else {
+      slot.innerHTML = `<div class="slot-inner">
+        <div class="slot-ph">
+          <div class="slot-ph-icon">🎬</div>
+          <div class="slot-ph-name">video</div>
+        </div>
+      </div>
+      <div class="play-badge">▶</div>`;
+    }
+    grid.appendChild(slot);
+  });
 }
-function closePhoto() { document.getElementById('photoBox').style.display = 'none'; }
+
+let lbIdx = 0;
+let lbSwipe = { x: 0 };
+
+function openMedia(idx) {
+  lbIdx = idx;
+  showLbItem();
+  document.getElementById('photoBox').classList.add('show');
+}
+
+function showLbItem() {
+  const m = MEDIA[lbIdx];
+  const img = document.getElementById('photoBoxImg');
+  const vid = document.getElementById('photoBoxVid');
+  vid.pause(); vid.removeAttribute('src');
+  if (m.type === 'video') {
+    img.style.display = 'none';
+    vid.style.display = 'block';
+    vid.src = m.src;
+    vid.play().catch(() => {});
+  } else {
+    vid.style.display = 'none';
+    img.style.display = 'block';
+    img.src = m.src;
+    img.style.animation = 'none';
+    img.offsetHeight;
+    img.style.animation = '';
+  }
+  document.getElementById('lbCounter').textContent = (lbIdx + 1) + ' / ' + MEDIA.length;
+}
+
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + MEDIA.length) % MEDIA.length;
+  showLbItem();
+}
+
+function closeMedia() {
+  const vid = document.getElementById('photoBoxVid');
+  vid.pause(); vid.removeAttribute('src');
+  document.getElementById('photoBox').classList.remove('show');
+}
+
+// ============================================================
+// CURSOR TRAIL
+// ============================================================
+let trailThrottle = 0;
+function spawnTrail(x, y) {
+  const now = Date.now();
+  if (now - trailThrottle < 55) return;
+  trailThrottle = now;
+  const el = document.createElement('div');
+  el.className = 'trail-heart';
+  el.textContent = ['💕','❤️','🌸','✨','💖'][Math.random() * 5 | 0];
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 750);
+}
+document.addEventListener('mousemove', e => spawnTrail(e.clientX, e.clientY));
+document.addEventListener('touchmove', e => {
+  const t = e.touches[0];
+  spawnTrail(t.clientX, t.clientY);
+}, {passive: true});
+document.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  spawnTrail(t.clientX, t.clientY);
+}, {passive: true});
+
+// ============================================================
+// SOUND EFFECTS (Web Audio — no files needed)
+// ============================================================
+let audioCtx = null;
+function getACtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playSound(type) {
+  try {
+    const ctx = getACtx();
+    const g = ctx.createGain();
+    g.connect(ctx.destination);
+    const now = ctx.currentTime;
+    if (type === 'catch') {
+      const o = ctx.createOscillator();
+      o.connect(g); o.type = 'sine';
+      o.frequency.setValueAtTime(900, now);
+      o.frequency.exponentialRampToValueAtTime(1300, now + 0.1);
+      g.gain.setValueAtTime(0.28, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      o.start(now); o.stop(now + 0.18);
+    } else if (type === 'match') {
+      [660, 880].forEach((f, i) => {
+        const o = ctx.createOscillator(); o.connect(g); o.type = 'sine';
+        o.frequency.value = f;
+        const t = now + i * 0.13;
+        g.gain.setValueAtTime(0.22, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+        o.start(t); o.stop(t + 0.35);
+      });
+    } else if (type === 'correct') {
+      [523, 659, 784].forEach((f, i) => {
+        const o = ctx.createOscillator(); const gi = ctx.createGain();
+        o.connect(gi); gi.connect(ctx.destination); o.type = 'triangle';
+        o.frequency.value = f;
+        const t = now + i * 0.1;
+        gi.gain.setValueAtTime(0.22, t);
+        gi.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+        o.start(t); o.stop(t + 0.3);
+      });
+    } else if (type === 'merge') {
+      const o = ctx.createOscillator(); o.connect(g); o.type = 'sine';
+      o.frequency.setValueAtTime(400, now);
+      o.frequency.exponentialRampToValueAtTime(800, now + 0.18);
+      g.gain.setValueAtTime(0.2, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+      o.start(now); o.stop(now + 0.32);
+    } else if (type === 'win') {
+      [523, 659, 784, 1047].forEach((f, i) => {
+        const o = ctx.createOscillator(); const gi = ctx.createGain();
+        o.connect(gi); gi.connect(ctx.destination); o.type = 'sine';
+        o.frequency.value = f;
+        const t = now + i * 0.13;
+        gi.gain.setValueAtTime(0.25, t);
+        gi.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+        o.start(t); o.stop(t + 0.45);
+      });
+    }
+  } catch(e) {}
+}
+
+// ============================================================
+// SCRATCH CARD
+// ============================================================
+let SC = { painting: false, revealed: false };
+function initScratch() {
+  const code = document.getElementById('couponCode');
+  const canvas = document.getElementById('scratchCanvas');
+  if (!canvas || !code || SC.revealed) return;
+  SC.painting = false;
+
+  const w = code.offsetWidth;
+  const h = code.offsetHeight;
+  canvas.width = w; canvas.height = h;
+
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, w, h);
+  grad.addColorStop(0, '#C8A020');
+  grad.addColorStop(0.45, '#F0D060');
+  grad.addColorStop(1, '#A07810');
+  ctx.fillStyle = grad;
+  ctx.roundRect(0, 0, w, h, 10);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(0,0,0,.18)';
+  ctx.font = 'bold 10px Lato, sans-serif';
+  ctx.textAlign = 'center';
+  for (let y = 14; y < h; y += 17) ctx.fillText('✦  SCRATCH HERE  ✦', w / 2, y);
+
+  function scratch(x, y) {
+    const r = canvas.getBoundingClientRect();
+    const cx = (x - r.left) * (canvas.width / r.width);
+    const cy = (y - r.top) * (canvas.height / r.height);
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(cx, cy, 24, 0, Math.PI * 2);
+    ctx.fill();
+    checkPct();
+  }
+
+  function checkPct() {
+    if (SC.revealed) return;
+    const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    let t = 0;
+    for (let i = 3; i < d.length; i += 4) if (d[i] < 128) t++;
+    if (t / (d.length / 4) > 0.55) {
+      SC.revealed = true;
+      canvas.style.transition = 'opacity .5s ease';
+      canvas.style.opacity = '0';
+      document.querySelector('.scratch-hint').style.opacity = '0';
+      setTimeout(() => { canvas.style.display = 'none'; }, 500);
+    }
+  }
+
+  canvas.onmousedown  = e => { SC.painting = true; scratch(e.clientX, e.clientY); };
+  canvas.onmousemove  = e => { if (SC.painting) scratch(e.clientX, e.clientY); };
+  canvas.onmouseup    = () => SC.painting = false;
+  canvas.ontouchstart = e => { e.preventDefault(); SC.painting = true; scratch(e.touches[0].clientX, e.touches[0].clientY); };
+  canvas.ontouchmove  = e => { e.preventDefault(); scratch(e.touches[0].clientX, e.touches[0].clientY); };
+  canvas.ontouchend   = () => SC.painting = false;
+}
+
+// ============================================================
+// DAYS TOGETHER COUNTER
+// ============================================================
+function startDaysCounter() {
+  const start = new Date('2025-12-21');
+  const total = Math.max(0, Math.floor((new Date() - start) / 86400000));
+  const el = document.getElementById('daysNum');
+  if (!el) return;
+  el.textContent = '0';
+  let n = 0;
+  const step = Math.max(1, Math.ceil(total / 60));
+  const iv = setInterval(() => {
+    n = Math.min(n + step, total);
+    el.textContent = n;
+    if (n >= total) clearInterval(iv);
+  }, 18);
+}
 
 // ============================================================
 // INIT
 // ============================================================
+function devSkip() {
+  if (cur < TOTAL - 1) go(cur + 1);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
+  if (DEV_MODE) {
+    document.getElementById('devBtn').style.display = 'block';
+    document.getElementById('devSkip').style.display = 'block';
+  }
+  renderLang();
   startCountdown();
-  // Silent API check after brief delay
   setTimeout(checkDate, 800);
+
+  // Lightbox swipe
+  const box = document.getElementById('photoBox');
+  box.addEventListener('touchstart', e => { lbSwipe.x = e.touches[0].clientX; }, {passive:true});
+  box.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - lbSwipe.x;
+    if (Math.abs(dx) > 45) lbNav(dx < 0 ? 1 : -1);
+  });
+  box.addEventListener('click', e => { if (e.target === box) closeMedia(); });
+});
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('photoBox').classList.contains('show')) return;
+  if (e.key === 'ArrowLeft')  lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'Escape')     closeMedia();
 });
 </script>
 <audio id="bgMusic" src="song.mp3" loop playsinline></audio>
+<script>
+  // Fallback in case DOMContentLoaded already fired
+  if (typeof DEV_MODE !== 'undefined' && DEV_MODE) {
+    const b = document.getElementById('devBtn');
+    if (b) b.style.display = 'block';
+    const s = document.getElementById('devSkip');
+    if (s) s.style.display = 'block';
+  }
+</script>
 </body>
 </html>
