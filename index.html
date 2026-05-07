@@ -599,7 +599,7 @@ body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--ink);over
 // ============================================================
 // DEV MODE — set to false before sending to Miranda!
 // ============================================================
-const DEV_MODE = true;
+const DEV_MODE = false;
 
 // ============================================================
 // TRANSLATIONS
@@ -1457,7 +1457,11 @@ function buildAlbum() {
       </div>`;
     } else {
       slot.innerHTML = `<div class="slot-inner">
-        <div class="slot-ph">
+        <video src="${m.src}" preload="metadata" muted playsinline
+          style="width:100%;height:100%;object-fit:cover;display:block;"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        </video>
+        <div class="slot-ph" style="display:none;">
           <div class="slot-ph-icon">🎬</div>
           <div class="slot-ph-name">video</div>
         </div>
